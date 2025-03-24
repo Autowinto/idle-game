@@ -1,25 +1,6 @@
-<div class='w-full sidebar p-6 min-h-64'>
-  <h2 class='text-2xl font-bold mb-2'>Day 1</h2>
-  <div class='stats mt-4'>
-    <div class='stat'>
-      <span class='label text-sm stat-labels'>lvl:</span>
-      <span class='value text-lg font-semibold'>100</span>
-    </div>
-    <span class='value text-sm text-gray-400'>EXP: 50 / 10000</span>
-    <div class='stat'>
-      <span class='label text-sm stat-labels'>Wood:</span>
-      <span class='value text-lg font-semibold'>50</span>
-    </div>
-    <div class='stat'>
-      <span class='label text-sm stat-labels'>Stone:</span>
-      <span class='value text-lg font-semibold'>30</span>
-    </div>
-    <div class='stat'>
-      <span class='label text-sm stat-labels'>Population:</span>
-      <span class='value text-lg font-semibold'>10</span>
-    </div>
-  </div>
-</div>
+<script>
+  import { stats } from '$lib/stores/statistics.svelte'
+</script>
 
 <style>
   .stat {
@@ -31,4 +12,23 @@
       color: var(--lavender-blush);
     }
   }
+
+  .sidebar {
+    max-height: fit-content;
+    background-color: var(--space-cadet-shade-02);
+    max-width: 30vw;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
 </style>
+
+<div class="w-full sidebar p-6 min-h-64">
+  <h2 class="text-2xl font-bold mb-2">Player Statistics</h2>
+  <div class="stats mt-4">
+    {#each stats.values as stat}
+      <div class="stat">
+        <span class="label text-sm stat-labels">{stat.label}:</span>
+        <span class="value text-lg font-semibold">{stat.value}</span>
+      </div>
+    {/each}
+  </div>
+</div>
