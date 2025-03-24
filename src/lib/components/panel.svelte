@@ -37,8 +37,7 @@
     background-color: var(--space-cadet-shade-02);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: space-around;
 
     .panel-item {
       text-align: center;
