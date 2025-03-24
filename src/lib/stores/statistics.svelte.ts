@@ -9,33 +9,6 @@ interface GameStat {
 export class Statistics {
     private stats = $state<Record<string, GameStat>>({});
 
-    increment(stat: string, amount: number = 1) {
-        this.stats[stat].value = (this.stats[stat] || 0).value + amount;
-    }
-
-    decrement(stat: string, amount: number = 1) {
-        this.stats[stat].value = (this.stats[stat] || 0).value - amount;
-    }
-
-    get(stat: string): GameStat {
-        return this.stats[stat];
-    }
-    get all() {
-        return this.stats;
-    }
-
-    set addStat(stat: GameStat) {
-        this.stats[stat.label] = stat;
-    }
-
-    set removeStat(statLabel: string) {
-        delete this.stats[statLabel];
-    }
-
-    setStat(statLabel: string, value: GameStat) {
-        this.stats[statLabel] = value;
-    }
-
     setStats(stats: Record<string, GameStat>) {
         this.stats = stats;
     }

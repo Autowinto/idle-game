@@ -1,9 +1,11 @@
 <script>
-  import Panel from './panel.svelte'
-
-  let children = $props()
-  console.log(children)
+  import Panel from "./Panel.svelte";
 </script>
+
+<div class="content">
+  <Panel />
+  <div class="content-area"></div>
+</div>
 
 <style>
   .content {
@@ -15,8 +17,3 @@
     min-width: 70vw;
   }
 </style>
-
-<div class="content">
-  <Panel />
-  <div class="content-area"></div>
-</div>
