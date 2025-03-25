@@ -13,6 +13,5 @@
 <style>
   .story {
     background-color: var(--space-cadet-shade-02);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 </style>

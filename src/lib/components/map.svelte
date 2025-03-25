@@ -1,6 +1,7 @@
 <script>
   import { planetSystem } from "$lib/services/planetSystem";
   import { onMount } from "svelte";
+
   const planetCount = 10; // Number of planets
   let planets = [];
 
@@ -244,7 +245,6 @@
     border-radius: 0.5rem;
     background-color: #ffffff;
     color: #222222;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
     z-index: 1000;
     transform: translate(-50%, -225%);
     animation: pulse-opacity 0.3s ease-in;

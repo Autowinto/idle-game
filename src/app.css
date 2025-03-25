@@ -8,18 +8,19 @@
 
 :root {
     /* CSS HEX - Not fully up to date with color palette */
---space-cadet: #2F2F4C;
---space-cadet-shade-01: #3F3E65;
---space-cadet-shade-02: #474672;
---hunter-green: #355834ff;
---battleship-gray: #9c9990ff;
---cerise: #da4167ff;
---lavender-blush: #e0d8deff;
---davy-gray: #56544D;
+    --space-cadet: #2F2F4C;
+    --space-cadet-shade-01: #3F3E65;
+    --space-cadet-shade-02: #474672;
+    --hunter-green: #355834ff;
+    --battleship-gray: #9c9990ff;
+    --cerise: #da4167ff;
+    --lavender-blush: #e0d8deff;
+    --davy-gray: #56544D;
 
 }
 
-html,body {
+html,
+body {
     margin: 0;
     padding: 0;
     font-family: 'Nunito', sans-serif;
@@ -31,9 +32,8 @@ html,body {
 .container {
     max-width: 100vw;
     height: 100vh;
-    margin: 0 0;
-    padding: 3rem 3rem;
     width: 100%;
+
     .main {
         display: grid;
         grid-template-columns: auto 1fr 1fr;

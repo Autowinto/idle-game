@@ -1,5 +1,5 @@
 <script>
-  import Panel from "./Panel.svelte";
+  import Panel from "./Topbar.svelte";
 </script>
 
 <div class="content">
