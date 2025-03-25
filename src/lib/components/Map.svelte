@@ -85,7 +85,6 @@
         {@const planet = planets.find((planet) => planet.ringId === ring.id)}
 
         <div class="ring-wrapper" style="width: {ring.borderWidth}px; height: {ring.borderWidth}px; z-index: {rings.length - ring.id};">
-
           <!--  Planets -->
           {#if planet}
             <div class="planets">
@@ -112,7 +111,7 @@
             </div>
           {/if}
 
-          <-- Rings -->
+          <!-- Rings -->
           <div class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}" style="border-color: {ring.color}; width: {ring.borderWidth}px;"></div>
         </div>
       {/each}
