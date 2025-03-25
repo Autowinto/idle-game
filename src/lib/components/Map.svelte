@@ -2,7 +2,7 @@
   import { planetSystem } from "$lib/services/planetSystem";
   import { onMount } from "svelte";
 
-  const planetCount = 10; // Number of planets
+  const planetCount = 8; // Number of planets
   let planets = [];
 
   let scale = 1;
@@ -33,13 +33,12 @@
 
     for (let i = 0; i < planets.length; i++) {
       // Pick a random ring
-      const ring = rings[Math.floor(Math.random() * rings.length)];
+      const ring = rings[i];
 
       // Calculate x and y based on the ring's radius
       const x = ring.borderWidth;
       const y = Math.floor(Math.random() * 360);
       // Check if the new position is valid (not overlapping with other planets)
-      console.log("x", x, "y", y);
       planets[i].xTranslate = x - borderPx;
       planets[i].angle = y;
       planets[i].size = 20; // Fixed size for simplicity
@@ -74,7 +73,6 @@
   let isHoveringPlanet = false;
   let planetSeed = 0;
   function handlePlanetHover(seed) {
-    console.log("seed", seed);
     isHoveringPlanet = !isHoveringPlanet;
     planetSeed = seed;
   }
@@ -85,7 +83,10 @@
     <div class="ring-content">
       {#each rings as ring}
         {@const planet = planets.find((planet) => planet.ringId === ring.id)}
+
         <div class="ring-wrapper" style="width: {ring.borderWidth}px; height: {ring.borderWidth}px; z-index: {rings.length - ring.id};">
+
+          <!--  Planets -->
           {#if planet}
             <div class="planets">
               {#if planetSeed === planet.seed && isHoveringPlanet}
@@ -110,6 +111,8 @@
               </div>
             </div>
           {/if}
+
+          <-- Rings -->
           <div class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}" style="border-color: {ring.color}; width: {ring.borderWidth}px;"></div>
         </div>
       {/each}
@@ -137,9 +140,6 @@
 
   .ring-content {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
   }
 
