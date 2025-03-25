@@ -58,7 +58,6 @@
 
     .panel-item {
       text-align: center;
-      min-width: 150px;
       max-width: 150px;
       padding: 1rem;
       cursor: pointer;
