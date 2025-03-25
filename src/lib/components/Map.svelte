@@ -73,9 +73,7 @@
         });
 
         if (attempts >= maxAttempts) {
-          console.warn(
-            `Failed to place planet ${i} after ${maxAttempts} attempts.`,
-          );
+          console.warn(`Failed to place planet ${i} after ${maxAttempts} attempts.`);
           break;
         }
       }
@@ -85,9 +83,7 @@
         planets[i].y = y;
         planets[i].size = 20; // Fixed size for simplicity
       } else {
-        console.warn(
-          `Failed to place planet ${i} after ${maxAttempts} attempts.`,
-        );
+        console.warn(`Failed to place planet ${i} after ${maxAttempts} attempts.`);
       }
     }
   });
@@ -124,35 +120,17 @@
   }
 </script>
 
-<div
-  class="map"
-  tabindex="-1"
-  role="button"
-  onwheel={handleWheel}
-  style="height: {size * 1.25}px;"
->
-  <div
-    class="content-wrapper"
-    style="transform: scale({scale}); transform-origin: {originX}% {originY}%;"
-  >
+<div class="map" tabindex="-1" role="button" onwheel={handleWheel} style="height: {size * 1.25}px;">
+  <div class="content-wrapper" style="transform: scale({scale}); transform-origin: {originX}% {originY}%;">
     <div class="ring-content">
       {#each rings as ring}
-        <div
-          class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}"
-          style="border-color: {ring.color}; width: {ring.borderWidth}px;"
-        ></div>
+        <div class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}" style="border-color: {ring.color}; width: {ring.borderWidth}px;"></div>
         {#if ring.id === rings.length}
-          <div
-            class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}"
-            style="border-color: {ring.color}; width: {ring.borderWidth}px;"
-          >
+          <div class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}" style="border-color: {ring.color}; width: {ring.borderWidth}px;">
             <div class="planets">
               {#each planets as planet}
                 {#if planetSeed === planet.seed && isHoveringPlanet}
-                  <div
-                    class="planet-info"
-                    style="left: {planet.x}px; top: {planet.y}px; background-color: {planet.color};"
-                  >
+                  <div class="planet-info" style="left: {planet.x}px; top: {planet.y}px; background-color: {planet.color};">
                     <h2 class="text-sm">{planet.name}</h2>
                     <p>{planet.description}</p>
                   </div>
