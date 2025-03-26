@@ -10,7 +10,7 @@
   let originY = 50; // Default transform-origin Y (percentage)
 
   function getWidth(index) {
-    return Math.ceil((25 + index * 70) / 2) * 2;
+    return Math.ceil((25 + index * 100) / 2) * 2;
   }
 
   const rings = [
@@ -41,7 +41,7 @@
       // Check if the new position is valid (not overlapping with other planets)
       planets[i].xTranslate = x - borderPx;
       planets[i].angle = y;
-      planets[i].size = 20; // Fixed size for simplicity
+      planets[i].size = 35; // Fixed size for simplicity
       planets[i].ringId = ring.id;
     }
   });
@@ -72,47 +72,97 @@
 
   let isHoveringPlanet = false;
   let planetSeed = 0;
+  let readyToSetZIndex = false;
   function handlePlanetHover(seed) {
+    if (isHoveringPlanet) {
+      console.log("Start timeout");
+      setTimeout(() => {
+        readyToSetZIndex = true;
+        planetSeed = 0;
+        console.log("End timeout");
+      }, 300);
+    } else {
+      readyToSetZIndex = false;
+      planetSeed = seed;
+    }
     isHoveringPlanet = !isHoveringPlanet;
-    planetSeed = seed;
+  }
+
+  function getZoneRange(ringId) {
+    const range = rings.find((ring) => ring.id === ringId)?.borderWidth;
+    let nextRange = rings.find((ring) => ring.id === ringId + 1)?.borderWidth;
+
+    if (!nextRange) {
+      nextRange = rings.find((ring) => ring.id === rings.length - 1)?.borderWidth;
+    }
+    console.log(nextRange - range);
+    return nextRange ? nextRange - range : 0;
+  }
+
+  function getZIndex(ring, planet) {
+    if (isHoveringPlanet || !readyToSetZIndex) {
+      if (planet && planet.seed === planetSeed) {
+        return rings.length + 1;
+      } else {
+        return rings.length - ring.id;
+      }
+    }
+    return rings.length - ring.id;
   }
 </script>
 
 <div class="map" tabindex="-1" role="button" onwheel={handleWheel} style="height: {size * 1.25}px;">
   <div class="content-wrapper" style="transform: scale({scale}); transform-origin: {originX}% {originY}%;">
     <div class="ring-content">
+      <!-- Sun -->
+      <div
+        class="sun"
+        style="width: 35px; height: 35px; background-color: yellow; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: {rings.length};"
+      ></div>
+
       {#each rings as ring}
         {@const planet = planets.find((planet) => planet.ringId === ring.id)}
 
-        <div class="ring-wrapper" style="width: {ring.borderWidth}px; height: {ring.borderWidth}px; z-index: {rings.length - ring.id};">
+        <div
+          class="ring-wrapper"
+          style="width: {ring.borderWidth}px; height: {ring.borderWidth}px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: {getZIndex(
+            ring,
+            planet
+          )};"
+        >
           <!--  Planets -->
           {#if planet}
-            <div class="planets">
-              {#if planetSeed === planet.seed && isHoveringPlanet}
-                <div class="planet-info" style="transform: translate({planet.xTranslate - planet.size / 2}px, -50%); background-color: {planet.color};">
-                  <h2 class="text-sm">{planet.name}</h2>
-                  <p>{planet.description}</p>
-                </div>
-              {/if}
-              <div class="planet-orbit" style="transform: rotate({planet.angle}deg);">
-                <button
-                  aria-label="planet"
-                  onmouseenter={() => {
-                    handlePlanetHover(planet.seed);
-                  }}
-                  onmouseleave={() => {
-                    handlePlanetHover(planet.seed);
-                  }}
-                  class="planet"
-                  style="transform: translate({planet.xTranslate - planet.size / 2}px, -50%); background-color: {planet.color};"
-                >
-                </button>
-              </div>
+            <div class="planet-orbit" style="position: absolute; width: 100%; height: 100%; transform: rotate({planet.angle}deg); z-index: {getZIndex(ring, planet)};">
+              <button
+                aria-label="planet"
+                onmouseenter={() => {
+                  handlePlanetHover(planet.seed);
+                }}
+                onmouseleave={() => {
+                  handlePlanetHover(planet.seed);
+                }}
+                class="planet"
+                style="position: absolute; right: -15px; top: 50%; transform: translateY(-50%) scale({isHoveringPlanet && planetSeed === planet.seed
+                  ? 5
+                  : 1}); background-color: {planet.color}; color: #222222;
+                  z-index: {isHoveringPlanet && planetSeed === planet.seed ? 100 : readyToSetZIndex ? 0 : 100};
+                    transition: transform 0.3s ease-in-out;"
+              >
+              </button>
             </div>
           {/if}
+          <!--  Rings -->
+          <div
+            class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}"
+            style="border-color: {ring.color}; width: {ring.borderWidth}px; position: absolute; border-radius: 50%; border-style: solid; border-width: 1px;"
+          ></div>
 
-          <!-- Rings -->
-          <div class="ring-item {ring.id === rings.length ? 'planets-ring' : ''}" style="border-color: {ring.color}; width: {ring.borderWidth}px;"></div>
+          <!-- {#if ring.id > 1}
+            <div
+              class="zone"
+              style="width: {ring.borderWidth}px; height: {ring.borderWidth}px; border: {getZoneRange(ring.id)}px solid {ring.color}; position: absolute; border-radius: 50%;"
+            ></div>
+          {/if} -->
         </div>
       {/each}
     </div>
@@ -156,6 +206,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
   }
 
   .ring-item.planets-ring {
@@ -164,31 +215,25 @@
     align-items: center;
   }
 
-  .planets {
+  .zone {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
+    border-radius: 100%;
+    opacity: 0.2;
   }
 
   .planet-orbit {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* animation: orbit 10s linear infinite; */
+    pointer-events: none;
   }
 
   .planet {
     cursor: pointer;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 35px;
+    height: 35px;
+    /* background-color: transparent !important; */
     border-radius: 50%;
     top: 50%;
-    z-index: 1000;
+    pointer-events: auto;
   }
 
   @keyframes orbit {
@@ -222,19 +267,5 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  .planet:hover {
-    transform: translate(-50%, -50%) scale(5);
-    animation: pulse-opacity 0.3s ease-in;
-  }
-
-  @keyframes pulse-opacity {
-    0% {
-      opacity: 0.25;
-    }
-    100% {
-      opacity: 1;
-    }
   }
 </style>
